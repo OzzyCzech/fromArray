@@ -1,6 +1,6 @@
 {
-	"name": "om/dataloader",
-	"description": "fromArray trait allow load/create objects with initial data array",
+	"name": "om/fromarray",
+	"description": "fromArray trait allow create objects instances loaded with initial data array",
 	"type": "library",
 	"license": "BSD-3-Clause",
 	"authors": [
