@@ -1,28 +1,6 @@
 # FromArray data loader
 
-
-fromArray trait allow load/create objects with initial data array
-```php
-
-<?php
-namespace DataLoader;
-
-trait fromArray {
-  /**
-   * @param array $data
-   * @param callable|null $filter
-   * @param array $scheme
-   * @return static
-   */
-  public static function fromArray(array $data = [], callable $filter = null, array $scheme = []) {
-    // ....
-  }
-}
-```
-
-## Basics (init object fromArray)
-
-Define class and use `FromArray` trait:
+`fromArray` trait allow load/create objects with initial data array
 
 ```php
 <?php
@@ -34,9 +12,23 @@ class Example {
   public $c;
 }
 
-$data = ['a' => 'value of A', 'b' => ' value of B', 'c' => 'value C'];
-$example = Example::fromArray($data); // return instance of Example class 
-echo $example->a; // will return 'value of A' string
+$data = [
+	'a' => 'value of A',
+  'b' => 'value of B',
+  'c' => 'value of C'
+];
+
+$example = Example::fromArray($data); // return instance of Example object
+echo json_encode($example, JSON_PRETTY_PRINT);
+```
+And that will be results...
+
+```json
+{
+  "a": "value of A",
+  "b": "value of B",
+  "c": "value of C"
+}
 ```
 
 ## Define object scheme and nesting
@@ -51,10 +43,7 @@ function alwaysFalse() { return false; }
 class Example {
   use \DataLoader\FromArray;
   
-  const SCHEME = [
-    'id' => 'intval',
-    'isFalse' => 'alwaysFalse'
-  ];
+  const SCHEME = ['id' => 'intval', 'isFalse' => 'alwaysFalse'];
   
   public $id;  
   public $isFalse = true;  
@@ -105,10 +94,7 @@ class B {
 class Nested {
   use \DataLoader\FromArray;
 
-  const SCHEME = [
-    'a' => A::class,
-    'b' => B::class
-  ];
+  const SCHEME = ['a' => A::class, 'b' => B::class];
 
   /** @var A */
   public $a;
