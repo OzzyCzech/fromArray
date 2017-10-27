@@ -12,12 +12,7 @@ class Example {
   public $c;
 }
 
-$data = [
-	'a' => 'value of A',
-  'b' => 'value of B',
-  'c' => 'value of C'
-];
-
+$data = ['a' => 'value of A', 'b' => 'value of B', 'c' => 'value of C'];
 $example = Example::fromArray($data); // return instance of Example object
 echo json_encode($example, JSON_PRETTY_PRINT);
 ```
