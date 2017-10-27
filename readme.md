@@ -34,6 +34,11 @@ And that will be results...
 }
 ```
 
+
+## Install
+
+```composer require om/from-array```
+
 ## SCHEME and nesting
 
 Default object scheme is defined with `SCHEME` constant. You can use **callable** functions:
