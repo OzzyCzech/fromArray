@@ -72,7 +72,9 @@ class Nested {
 
 class Example {
   use \DataLoader\FromArray;
+  
   const SCHEME = ['nested' => Nested::class];
+  
   public $nested;
 }
 $example = Example::fromArray(['nested' => ['some', 'data', 'here']]);
