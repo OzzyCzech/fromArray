@@ -1,6 +1,6 @@
 # FromArray data loader
 
-`fromArray` trait allow load/create objects with initial data array
+`fromArray` trait allow create objects instances loaded with initial data array:
 
 ```php
 <?php
