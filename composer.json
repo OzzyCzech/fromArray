@@ -1,0 +1,22 @@
+{
+	"name": "om/dataloader",
+	"description": "fromArray trait allow load/create objects with initial data array",
+	"type": "library",
+	"license": "BSD-3-Clause",
+	"authors": [
+		{
+			"name": "Roman Ožana",
+			"homepage": "https://www.omdesign.cz/",
+			"email": "ozana@omdesign.cz"
+		}
+	],
+	"autoload": {
+		"psr-4": {"DataLoader\\": "src/"}
+	},
+	"require": {
+		"php": ">=5.6.0"
+	},
+	"require-dev": {
+		"nette/tester": "*"
+	}
+}
