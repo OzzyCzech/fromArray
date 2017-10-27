@@ -34,7 +34,7 @@ And that will be results...
 }
 ```
 
-## Define object scheme and nesting
+## SCHEME and nesting
 
 Default object scheme is defined with `SCHEME` constant. You can use **callable** functions:
 
@@ -108,7 +108,16 @@ class Nested {
 }
 ```
 
-## Define value filter
+You can also change scheme like that:
+
+```php
+<?php
+$scheme = Nested::fromArray($data, null, ['a' => function($data) { return $data; }]);
+```
+
+In this case `$data` in `$a` will remain unchanged...  
+
+## Value filter
 
 ```php
 <?php
