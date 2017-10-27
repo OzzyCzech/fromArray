@@ -1,5 +1,5 @@
 {
-	"name": "om/fromarray",
+	"name": "om/from-array",
 	"description": "fromArray trait allow create objects instances loaded with initial data array",
 	"type": "library",
 	"license": "BSD-3-Clause",
