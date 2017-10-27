@@ -8,13 +8,13 @@ fromArray trait allow load/create objects with initial data array
 namespace DataLoader;
 
 trait fromArray {
-	/**
-	 * @param array $data
-	 * @param callable|null $filter
-	 * @param array $scheme
-	 * @return static
-	 */
-	public static function fromArray(array $data = [], callable $filter = null, array $scheme = []) {
+  /**
+   * @param array $data
+   * @param callable|null $filter
+   * @param array $scheme
+   * @return static
+   */
+  public static function fromArray(array $data = [], callable $filter = null, array $scheme = []) {
     // ....
   }
 }
@@ -28,7 +28,7 @@ Define class and use `FromArray` trait:
 <?php
 
 class Example {
-	use \DataLoader\FromArray;
+  use \DataLoader\FromArray;
   public $a;
   public $b;
   public $c;
@@ -49,13 +49,13 @@ Default object scheme is defined with `SCHEME` constant. You can use **callable*
 function alwaysFalse() { return false; }
 
 class Example {
-	use \DataLoader\FromArray;
-	
-	const SCHEME = [
-		'id' => 'intval',
-		'isFalse' => 'alwaysFalse'
-	];
-	
+  use \DataLoader\FromArray;
+  
+  const SCHEME = [
+    'id' => 'intval',
+    'isFalse' => 'alwaysFalse'
+  ];
+  
   public $id;  
   public $isFalse = true;  
 }
@@ -72,16 +72,16 @@ Or you can use **class names**:
 <?php
 
 class Nested {
-	public $data = [];
-	public function __construct($data) {
-		$this->data = $data;
-	}
+  public $data = [];
+  public function __construct($data) {
+    $this->data = $data;
+  }
 }
 
 class Example {
-	use \DataLoader\FromArray;
-	const SCHEME = ['nested' => Nested::class];
-	public $nested;
+  use \DataLoader\FromArray;
+  const SCHEME = ['nested' => Nested::class];
+  public $nested;
 }
 $example = Example::fromArray(['nested' => ['some', 'data', 'here']]);
 var_dump($example->nested); // will return instance of Nested class
@@ -93,27 +93,27 @@ will be called instead of class constructor. That allow you to made nested struc
 <?php
 
 class A {
-	use \DataLoader\FromArray;
-	public $value;
+  use \DataLoader\FromArray;
+  public $value;
 }
 
 class B {
-	use \DataLoader\FromArray;
-	public $value;
+  use \DataLoader\FromArray;
+  public $value;
 }
 
 class Nested {
-	use \DataLoader\FromArray;
+  use \DataLoader\FromArray;
 
-	const SCHEME = [
-		'a' => A::class,
-		'b' => B::class
-	];
+  const SCHEME = [
+    'a' => A::class,
+    'b' => B::class
+  ];
 
-	/** @var A */
-	public $a;
-	/** @var B */
-	public $b;
+  /** @var A */
+  public $a;
+  /** @var B */
+  public $b;
 }
 ```
 
@@ -123,15 +123,15 @@ class Nested {
 <?php
 
 class Filter {
-	/** @var DateTime */
-	public $date;
-	/** @var string */
-	public $notDate;
+  /** @var DateTime */
+  public $date;
+  /** @var string */
+  public $notDate;
 }
 
 $data = ['date'=> '2017-11-01', 'notDate'=> '2017-11-01'];
 $example = Filter::fromArray($data, function ($value, $property){
-	return ($property === 'date') ? new DateTime($value) : $value;
+  return ($property === 'date') ? new DateTime($value) : $value;
 });
 
 echo $example->notDate; // will return '2017-11-01' string
@@ -143,9 +143,9 @@ Filter can be useful when you for example load data from MongoDb:
 ```php
 <?php
 function ($value, $property) {
-	if ($property === '_id') return new \MongoId((string)$value);
-	if ($value instanceof \MongoDate) return new \DateTime('@' . $value->sec);
-	return $value;
+  if ($property === '_id') return new \MongoId((string)$value);
+  if ($value instanceof \MongoDate) return new \DateTime('@' . $value->sec);
+  return $value;
 }
 ```
 
