@@ -16,11 +16,14 @@ trait FromArray {
 	 * @return static
 	 */
 	public static function fromArray(array $data = [], callable $filter = null, array $scheme = []) {
-		// merge $scheme with default self::SCHEME
-		if (defined('self::SCHEME')) $scheme = array_merge(self::SCHEME, $scheme);
+		// Late Static Binding class
+		$class = get_called_class();
+
+		// merge $scheme with default $class::SCHEME
+		if (defined($class . '::SCHEME')) $scheme = array_merge($class::SCHEME, $scheme);
 
 		// Hydrate object with values
-		foreach (get_object_vars($obj = new self) as $property => $default) {
+		foreach (get_object_vars($obj = new $class) as $property => $default) {
 
 			// Skip missing data
 			if (!array_key_exists($property, $data)) continue;
