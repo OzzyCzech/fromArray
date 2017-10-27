@@ -12,10 +12,18 @@ class Example {
   public $c;
 }
 
-$data = ['a' => 'value of A', 'b' => 'value of B', 'c' => 'value of C'];
-$example = Example::fromArray($data); // return instance of Example object
+$data = [
+  'a' => 'value of A',
+  'b' => 'value of B', 
+  'c' => 'value of C'
+];
+
+// return new instance of Example object with $data
+$example = Example::fromArray($data); 
+
 echo json_encode($example, JSON_PRETTY_PRINT);
 ```
+
 And that will be results...
 
 ```json
