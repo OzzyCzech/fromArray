@@ -122,6 +122,20 @@ $scheme = Nested::fromArray($data, null, ['a' => function($data) { return $data;
 
 In this case `$data` in `$a` will remain unchanged...  
 
+## Mapping
+```php
+<?php
+class Example {
+  use \DataLoader\FromArray;
+  
+  const MAPPING = ['anotherId'=>'id'];
+  
+  public $id;
+}
+$example = Example::fromArray(['anotherId' => 1234]);
+var_dump($example->id); // will return 1234
+```
+
 ## Value filter
 
 ```php
