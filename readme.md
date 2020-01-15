@@ -46,15 +46,17 @@ function alwaysFalse() { return false; }
 
 class Example {
   use \DataLoader\FromArray;
-  const SCHEME = ['id' => 'intval', 'isFalse' => 'alwaysFalse'];
+  const SCHEME = ['id' => 'intval', 'isFalse' => 'alwaysFalse', 'date' => DateTime::class];
   public $id;  
+  public $date;  
   public $isFalse = true;  
 }
 
-$data = ['id'=> '12345', 'isFalse' => true];
+$data = ['id'=> '12345', 'isFalse' => true, 'date' => '2020-01-01'];
 $example = Example::fromArray($data);
 echo $example->id; // will return integer 12345
 echo $example->isFalse; // will return false
+echo $example->date->format('c'); // will return date
 ```
 
 Or you can use **class names**:
