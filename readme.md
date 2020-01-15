@@ -46,9 +46,7 @@ function alwaysFalse() { return false; }
 
 class Example {
   use \DataLoader\FromArray;
-  
   const SCHEME = ['id' => 'intval', 'isFalse' => 'alwaysFalse'];
-  
   public $id;  
   public $isFalse = true;  
 }
@@ -71,9 +69,7 @@ class Nested {
 
 class Example {
   use \DataLoader\FromArray;
-  
   const SCHEME = ['nested' => Nested::class];
-  
   public $nested;
 }
 $example = Example::fromArray(['nested' => ['some', 'data', 'here']]);
@@ -96,9 +92,7 @@ class B {
 
 class Nested {
   use \DataLoader\FromArray;
-
   const SCHEME = ['a' => A::class, 'b' => B::class];
-
   /** @var A */
   public $a;
   /** @var B */
@@ -137,7 +131,7 @@ class Filter {
 }
 
 $data = ['date'=> '2017-11-01', 'notDate'=> '2017-11-01'];
-$example = Filter::fromArray($data, function ($value, $property){
+$example = Filter::fromArray($data, function ($value, $property) {
   return ($property === 'date') ? new DateTime($value) : $value;
 });
 
