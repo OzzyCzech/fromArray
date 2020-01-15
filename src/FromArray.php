@@ -13,31 +13,35 @@ trait FromArray {
 	 * @param array $data
 	 * @param callable|null $filter
 	 * @param array $scheme
+	 * @param array $mapping
 	 * @return static
 	 */
-	public static function fromArray(array $data = [], callable $filter = null, array $scheme = [],array $mapping = []) {
+	public static function fromArray(array $data = [], callable $filter = null, array $scheme = [], array $mapping = []) {
 		// Late Static Binding class
 		$class = get_called_class();
 
 		// merge $scheme with default $class::SCHEME
-		if (defined($class . '::SCHEME')) $scheme = array_merge($class::SCHEME, $scheme);
+		if (defined($class . '::SCHEME')) {
+			$scheme = array_merge($class::SCHEME, $scheme);
+		}
 
 		// merge $mapping with default $class::MAPPING
-		if (defined($class . '::MAPPING')) $mapping = array_merge($class::MAPPING, $mapping);
+		if (defined($class . '::MAPPING')) {
+			$mapping = array_flip(array_merge($class::MAPPING, $mapping));
+		}
 
 		// Hydrate object with values
 		foreach (get_object_vars($obj = new $class) as $property => $default) {
-			// If data key different from class key then change it.
-			if(!empty($mapping) && isset($mapping[$property])){
-        		$tempData = $data[$mapping[$property]];
-        		unset($data[$mapping[$property]]);
-        		$data[$property] = $tempData;
-      		}
+
+			// Resolve data key with mapping array
+			$key = array_key_exists($property, $mapping) ? $mapping[$property] : $property;
+
 			// Skip missing data
-			if (!array_key_exists($property, $data)) continue;
+			if (!array_key_exists($key, $data)) continue;
 
 			// Filter values with callback
-			$value = is_callable($filter) ? call_user_func($filter, $data[$property], $property, $default) : $data[$property];
+
+			$value = is_callable($filter) ? call_user_func($filter, $data[$key], $property, $default) : $data[$key];
 
 			// Solving scheme prescription...
 			if (array_key_exists($property, $scheme)) {
