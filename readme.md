@@ -155,6 +155,13 @@ function ($value, $property) {
 }
 ```
 
+## Testing
+
+```bash
+composer install
+composer test # will run Nette Tester
+```
+
 
 ## Resources
 
