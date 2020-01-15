@@ -3,8 +3,6 @@
 `fromArray` trait allow create objects instances loaded with initial data array:
 
 ```php
-<?php
-
 class Example {
   use \DataLoader\FromArray;
   public $a;
@@ -44,8 +42,6 @@ And that will be results...
 Default object scheme is defined with `SCHEME` constant. You can use **callable** functions:
 
 ```php
-<?php
-
 function alwaysFalse() { return false; }
 
 class Example {
@@ -66,8 +62,6 @@ echo $example->isFalse; // will return false
 Or you can use **class names**:
 
 ```php
-<?php
-
 class Nested {
   public $data = [];
   public function __construct($data) {
@@ -85,12 +79,11 @@ class Example {
 $example = Example::fromArray(['nested' => ['some', 'data', 'here']]);
 var_dump($example->nested); // will return instance of Nested class
 ```
+
 If you are use class that use same trait `object::fromArray()` then `fromArray` function (with same `$filter`) 
 will be called instead of class constructor. That allow you to made nested structures and load structured data:  
 
 ```php
-<?php
-
 class A {
   use \DataLoader\FromArray;
   public $value;
@@ -116,20 +109,17 @@ class Nested {
 You can also change scheme like that:
 
 ```php
-<?php
 $scheme = Nested::fromArray($data, null, ['a' => function($data) { return $data; }]);
 ```
 
 In this case `$data` in `$a` will remain unchanged...  
 
 ## Mapping
+
 ```php
-<?php
 class Example {
   use \DataLoader\FromArray;
-  
   const MAPPING = ['anotherId'=>'id'];
-  
   public $id;
 }
 $example = Example::fromArray(['anotherId' => 1234]);
@@ -139,8 +129,6 @@ var_dump($example->id); // will return 1234
 ## Value filter
 
 ```php
-<?php
-
 class Filter {
   /** @var DateTime */
   public $date;
@@ -160,7 +148,6 @@ var_dump($example->date); // will return DateTime object
 Filter can be useful when you for example load data from MongoDb:
 
 ```php
-<?php
 function ($value, $property) {
   if ($property === '_id') return new \MongoId((string)$value);
   if ($value instanceof \MongoDate) return new \DateTime('@' . $value->sec);
