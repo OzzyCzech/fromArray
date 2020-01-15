@@ -15,16 +15,24 @@ trait FromArray {
 	 * @param array $scheme
 	 * @return static
 	 */
-	public static function fromArray(array $data = [], callable $filter = null, array $scheme = []) {
+	public static function fromArray(array $data = [], callable $filter = null, array $scheme = [],array $mapping = []) {
 		// Late Static Binding class
 		$class = get_called_class();
 
 		// merge $scheme with default $class::SCHEME
 		if (defined($class . '::SCHEME')) $scheme = array_merge($class::SCHEME, $scheme);
 
+		// merge $mapping with default $class::MAPPING
+		if (defined($class . '::MAPPING')) $mapping = array_merge($class::MAPPING, $mapping);
+
 		// Hydrate object with values
 		foreach (get_object_vars($obj = new $class) as $property => $default) {
-
+			// If data key different from class key then change it.
+			if(!empty($mapping) && isset($mapping[$property])){
+        		$tempData = $data[$mapping[$property]];
+        		unset($data[$mapping[$property]]);
+        		$data[$property] = $tempData;
+      		}
 			// Skip missing data
 			if (!array_key_exists($property, $data)) continue;
 
