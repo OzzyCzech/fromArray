@@ -1,5 +1,5 @@
 
-# From Array Data loader trait 
+# `FromArray` Data loader trait 
 
 ## Install
 
