@@ -5,19 +5,19 @@
 
 ```php
 class Example {
-	use \DataLoader\FromArray;
+  use \DataLoader\FromArray;
 
-	public ?string $a = null;
-	public ?string $b = null;
-	public ?string $c = null;
+  public ?string $a = null;
+  public ?string $b = null;
+  public ?string $c = null;
 }
 
 $example = Example::fromArray(
-	[
-		'a' => 'value of A',
-		'b' => 'value of B',
-		'c' => 'value of C'
-	]
+  [
+    'a' => 'value of A',
+    'b' => 'value of B',
+    'c' => 'value of C'
+  ]
 );
 
 echo json_encode($example, JSON_PRETTY_PRINT);
@@ -49,20 +49,20 @@ Default object scheme is defined with `SCHEME` constant. You can use **callable*
 require_once __DIR__ . '/../src/FromArray.php';
 
 class SchemeExample {
-	use \DataLoader\FromArray;
+  use \DataLoader\FromArray;
 
-	const SCHEME = [
-		'id' => 'intval',
-		'date' => DateTime::class
-	];
-	public ?int $id = null;
-	public ?DateTime $date = null;
-	public bool $alwaysFalse = true;
+  const SCHEME = [
+    'id' => 'intval',
+    'date' => DateTime::class
+  ];
+  public ?int $id = null;
+  public ?DateTime $date = null;
+  public bool $alwaysFalse = true;
 }
 
 $example = SchemeExample::fromArray(
-	data: ['id' => '12345', 'alwaysFalse' => true, 'date' => '2020-01-01'],
-	scheme: ['alwaysFalse' => fn() => false]
+  data: ['id' => '12345', 'alwaysFalse' => true, 'date' => '2020-01-01'],
+  scheme: ['alwaysFalse' => fn() => false]
 );
 
 var_dump($example->id); // will return integer 12345
@@ -75,18 +75,18 @@ Or you can use **class names**:
 ```php
 
 class NestedData {
-	public array $data = [];
+  public array $data = [];
 
-	public function __construct($data) {
-		$this->data = $data;
-	}
+  public function __construct($data) {
+    $this->data = $data;
+  }
 }
 
 class NestedExample {
-	use \DataLoader\FromArray;
+  use \DataLoader\FromArray;
 
-	const SCHEME = ['nested' => NestedData::class];
-	public ?NestedData $nested = null;
+  const SCHEME = ['nested' => NestedData::class];
+  public ?NestedData $nested = null;
 }
 
 $example = NestedExample::fromArray(['nested' => ['some', 'data', 'here']]);
@@ -98,27 +98,27 @@ will be called instead of class constructor. That allow you to made nested struc
 
 ```php
 class One {
-	use \DataLoader\FromArray;
-	public ?string $value = null;
+  use \DataLoader\FromArray;
+  public ?string $value = null;
 }
 
 class Two {
-	use \DataLoader\FromArray;
-	public ?string $value = null;
+  use \DataLoader\FromArray;
+  public ?string $value = null;
 }
 
 class Multiple {
-	use \DataLoader\FromArray;
-	const SCHEME = ['one' => One::class, 'two' => Two::class];
-	public ?One $one = null;
-	public ?Two $two = null;
+  use \DataLoader\FromArray;
+  const SCHEME = ['one' => One::class, 'two' => Two::class];
+  public ?One $one = null;
+  public ?Two $two = null;
 }
 
 $nested = Multiple::fromArray(
-	[
-		'one' => ['value' => 'set value for one'],
-		'two' => ['value' => 'set value for two']
-	]
+  [
+    'one' => ['value' => 'set value for one'],
+    'two' => ['value' => 'set value for two']
+  ]
 );
 ```
 
