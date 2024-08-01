@@ -1,5 +1,11 @@
 
-# FromArray data loader
+# From Array Data loader trait 
+
+## Install
+
+```shell
+composer require om/from-array
+```
 
 `fromArray` trait allow to create objects instances loaded with initial data array:
 
@@ -33,13 +39,7 @@ And that will be results...
 }
 ```
 
-## Install
-
-```shell
-composer require om/from-array
-```
-
-## SCHEME and nesting
+### SCHEME and nesting
 
 Default object scheme is defined with `SCHEME` constant. You can use **callable** functions:
 
@@ -130,7 +130,7 @@ $scheme = Nested::fromArray(data: $data, filter: ['a' => function($data) { retur
 
 In this case `$data` in `$a` will remain unchanged...
 
-## Mapping
+### Mapping
 
 ```php
 class Example {
@@ -142,7 +142,7 @@ $example = Example::fromArray(['anotherId' => 1234]);
 var_dump($example->id); // will return 1234
 ```
 
-## Value filter
+### Value filter
 
 ```php
 class Filter {
