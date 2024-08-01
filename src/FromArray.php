@@ -9,14 +9,15 @@ namespace DataLoader;
  */
 trait FromArray {
 
-
 	public static function fromArray(array $data = [], ?callable $filter = null, array $scheme = [], array $mapping = []): static {
 		$class = get_called_class();
 
+		// Allow to define schema in class
 		if (defined(constant_name: "$class::SCHEME")) {
 			$scheme = array_merge($class::SCHEME, $scheme);
 		}
 
+		// Allow map one property to another
 		if (defined(constant_name: "$class::MAPPING")) {
 			$mapping = array_flip(array_merge($class::MAPPING, $mapping));
 		}
@@ -31,7 +32,6 @@ trait FromArray {
 			if (!array_key_exists($key, $data)) continue;
 
 			// Filter values with callback
-
 			$value = is_callable($filter) ? call_user_func($filter, $data[$key], $property, $default) : $data[$key];
 
 			// Solving scheme prescription...

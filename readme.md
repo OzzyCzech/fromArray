@@ -1,23 +1,24 @@
+
 # FromArray data loader
 
 `fromArray` trait allow to create objects instances loaded with initial data array:
 
 ```php
 class Example {
-  use \DataLoader\FromArray;
-  public $a;
-  public $b;
-  public $c;
+	use \DataLoader\FromArray;
+
+	public ?string $a = null;
+	public ?string $b = null;
+	public ?string $c = null;
 }
 
-$data = [
-  'a' => 'value of A',
-  'b' => 'value of B', 
-  'c' => 'value of C'
-];
-
-// return new instance of Example object with $data
-$example = Example::fromArray($data); 
+$example = Example::fromArray(
+	[
+		'a' => 'value of A',
+		'b' => 'value of B',
+		'c' => 'value of C'
+	]
+);
 
 echo json_encode($example, JSON_PRETTY_PRINT);
 ```
@@ -32,87 +33,102 @@ And that will be results...
 }
 ```
 
-
 ## Install
 
-```composer require om/from-array```
+```shell
+composer require om/from-array
+```
 
 ## SCHEME and nesting
 
 Default object scheme is defined with `SCHEME` constant. You can use **callable** functions:
 
 ```php
-function alwaysFalse() { return false; }
+<?php
 
-class Example {
-  use \DataLoader\FromArray;
-  const SCHEME = [
-    'id' => 'intval', 
-    'isFalse' => 'alwaysFalse',
-    'date' => DateTime::class
-  ];
-  public $id;  
-  public $date;  
-  public $isFalse = true;  
+require_once __DIR__ . '/../src/FromArray.php';
+
+class SchemeExample {
+	use \DataLoader\FromArray;
+
+	const SCHEME = [
+		'id' => 'intval',
+		'date' => DateTime::class
+	];
+	public ?int $id = null;
+	public ?DateTime $date = null;
+	public bool $alwaysFalse = true;
 }
 
-$data = ['id'=> '12345', 'isFalse' => true, 'date' => '2020-01-01'];
-$example = Example::fromArray($data);
-echo $example->id; // will return integer 12345
-echo $example->isFalse; // will return false
-echo $example->date->format('c'); // will return date
+$example = SchemeExample::fromArray(
+	data: ['id' => '12345', 'alwaysFalse' => true, 'date' => '2020-01-01'],
+	scheme: ['alwaysFalse' => fn() => false]
+);
+
+var_dump($example->id); // will return integer 12345
+var_dump($example->alwaysFalse); // will return false
+var_dump($example->date->format('c')); // will return date
 ```
 
 Or you can use **class names**:
 
 ```php
-class Nested {
-  public $data = [];
-  public function __construct($data) {
-    $this->data = $data;
-  }
+
+class NestedData {
+	public array $data = [];
+
+	public function __construct($data) {
+		$this->data = $data;
+	}
 }
 
-class Example {
-  use \DataLoader\FromArray;
-  const SCHEME = ['nested' => Nested::class];
-  public $nested;
+class NestedExample {
+	use \DataLoader\FromArray;
+
+	const SCHEME = ['nested' => NestedData::class];
+	public ?NestedData $nested = null;
 }
-$example = Example::fromArray(['nested' => ['some', 'data', 'here']]);
+
+$example = NestedExample::fromArray(['nested' => ['some', 'data', 'here']]);
 var_dump($example->nested); // will return instance of Nested class
 ```
 
-If you are use class that use same trait `object::fromArray()` then `fromArray` function (with same `$filter`) 
-will be called instead of class constructor. That allow you to made nested structures and load structured data:  
+If you are use class that use same trait `object::fromArray()` then `fromArray` function (with same `$filter`)
+will be called instead of class constructor. That allow you to made nested structures and load structured data:
 
 ```php
-class A {
-  use \DataLoader\FromArray;
-  public $value;
+class One {
+	use \DataLoader\FromArray;
+	public ?string $value = null;
 }
 
-class B {
-  use \DataLoader\FromArray;
-  public $value;
+class Two {
+	use \DataLoader\FromArray;
+	public ?string $value = null;
 }
 
-class Nested {
-  use \DataLoader\FromArray;
-  const SCHEME = ['a' => A::class, 'b' => B::class];
-  /** @var A */
-  public $a;
-  /** @var B */
-  public $b;
+class Multiple {
+	use \DataLoader\FromArray;
+	const SCHEME = ['one' => One::class, 'two' => Two::class];
+	public ?One $one = null;
+	public ?Two $two = null;
 }
+
+$nested = Multiple::fromArray(
+	[
+		'one' => ['value' => 'set value for one'],
+		'two' => ['value' => 'set value for two']
+	]
+);
 ```
 
 You can also change scheme like that:
 
 ```php
-$scheme = Nested::fromArray($data, null, ['a' => function($data) { return $data; }]);
+$scheme = Nested::fromArray(data: $data, filter: ['a' => function($data) { return $data; }]);
 ```
 
-In this case `$data` in `$a` will remain unchanged...  
+In this case `$data` in `$a` will remain unchanged...
 
 ## Mapping
 
@@ -120,7 +136,7 @@ In this case `$data` in `$a` will remain unchanged...
 class Example {
   use \DataLoader\FromArray;
   const MAPPING = ['anotherId'=>'id'];
-  public $id;
+  public ?int $id = null;
 }
 $example = Example::fromArray(['anotherId' => 1234]);
 var_dump($example->id); // will return 1234
@@ -130,10 +146,8 @@ var_dump($example->id); // will return 1234
 
 ```php
 class Filter {
-  /** @var DateTime */
-  public $date;
-  /** @var string */
-  public $notDate;
+  public ?DateTime $date = null;
+  public string $notDate = '';
 }
 
 $data = ['date'=> '2017-11-01', 'notDate'=> '2017-11-01'];
@@ -161,7 +175,6 @@ function ($value, $property) {
 composer install
 composer test # will run Nette Tester
 ```
-
 
 ## Resources
 
