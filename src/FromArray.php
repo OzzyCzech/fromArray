@@ -9,24 +9,15 @@ namespace DataLoader;
  */
 trait FromArray {
 
-	/**
-	 * @param array $data
-	 * @param callable|null $filter
-	 * @param array $scheme
-	 * @param array $mapping
-	 * @return static
-	 */
-	public static function fromArray(array $data = [], callable $filter = null, array $scheme = [], array $mapping = []) {
-		// Late Static Binding class
+
+	public static function fromArray(array $data = [], ?callable $filter = null, array $scheme = [], array $mapping = []): static {
 		$class = get_called_class();
 
-		// merge $scheme with default $class::SCHEME
-		if (defined($class . '::SCHEME')) {
+		if (defined(constant_name: "$class::SCHEME")) {
 			$scheme = array_merge($class::SCHEME, $scheme);
 		}
 
-		// merge $mapping with default $class::MAPPING
-		if (defined($class . '::MAPPING')) {
+		if (defined(constant_name: "$class::MAPPING")) {
 			$mapping = array_flip(array_merge($class::MAPPING, $mapping));
 		}
 
@@ -51,7 +42,7 @@ trait FromArray {
 
 					if (method_exists($scheme[$property], __FUNCTION__)) {
 						// 1.1 fromArray() method exists
-						$obj->{$property} = call_user_func([$scheme[$property], __FUNCTION__], (array)$value, $filter);
+						$obj->{$property} = call_user_func([$scheme[$property], __FUNCTION__], (array) $value, $filter);
 					} else {
 						// 1.2 Create object with constructor
 						$obj->{$property} = new $scheme[$property]($value);
@@ -67,6 +58,7 @@ trait FromArray {
 				$obj->{$property} = $value; // assign value to object
 			}
 		}
+
 		return $obj;
 	}
 }

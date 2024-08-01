@@ -1,6 +1,6 @@
 # FromArray data loader
 
-`fromArray` trait allow create objects instances loaded with initial data array:
+`fromArray` trait allow to create objects instances loaded with initial data array:
 
 ```php
 class Example {
@@ -46,7 +46,11 @@ function alwaysFalse() { return false; }
 
 class Example {
   use \DataLoader\FromArray;
-  const SCHEME = ['id' => 'intval', 'isFalse' => 'alwaysFalse', 'date' => DateTime::class];
+  const SCHEME = [
+    'id' => 'intval', 
+    'isFalse' => 'alwaysFalse',
+    'date' => DateTime::class
+  ];
   public $id;  
   public $date;  
   public $isFalse = true;  
