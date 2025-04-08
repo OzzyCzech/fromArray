@@ -1,21 +1,26 @@
 <?php
 
+use DataLoader\FromArray;
 use Tester\Assert;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/bootstrap.php';
 
-class A {
-	use \DataLoader\FromArray;
-	public $value;
+class Base {
+	use FromArray;
+
+	public ?string $value = null;
 }
 
-class C extends A {
+// inheritance test
+class Custom extends Base {
 
 }
 
-// the "Late Static Binding" class name test
+test('LateStaticBinding class name test',
+	function () {
+		$c = Custom::fromArray(['value' => 'abc']);
 
-$c = C::fromArray(['value' => 'abc']);
-
-Assert::true($c instanceof C);
-Assert::same('abc', $c->value);
+		Assert::type(Custom::class, $c);
+		Assert::same('abc', $c->value);
+	}
+);

@@ -1,55 +1,55 @@
 <?php
 
+use DataLoader\FromArray;
 use Tester\Assert;
 
-require __DIR__ . '/../vendor/autoload.php';
-
+require __DIR__ . '/bootstrap.php';
 
 class A {
-	use \DataLoader\FromArray;
-	public $value;
+	use FromArray;
+
+	public ?string $value = null;
 }
 
 class B {
-	use \DataLoader\FromArray;
-	public $value;
+	use FromArray;
+
+	public ?string $value = null;
 }
 
 class Nested {
-	use \DataLoader\FromArray;
+	use FromArray;
 
 	const SCHEME = [
 		'a' => A::class,
 		'b' => B::class
 	];
 
-	/** @var A */
-	public $a;
-	/** @var B */
-	public $b;
+	public ?A $a = null;
+	public ?B $b = null;
 }
 
 $data = [
-	'a' => ['value' => 'this is value of A'],
-	'b' => ['value' => 'this is value of B']
+	'a' => ['value' => 'value of A'],
+	'b' => ['value' => 'value of B']
 ];
 
+test('Nested::fromArray() creates nested objects', function () use ($data) {
+	$nested = Nested::fromArray($data);
 
-$nested = Nested::fromArray($data);
+	Assert::type(Nested::class, $nested);
+	Assert::type(A::class, $nested->a);
+	Assert::type(B::class, $nested->b);
+});
 
-Assert::true($nested->a instanceof A);
-Assert::true($nested->b instanceof B);
-Assert::same('this is value of A', $nested->a->value);
-Assert::same('this is value of B', $nested->b->value);
+test('Filter can change leafs values', function () use ($data) {
+	$nested = Nested::fromArray(
+		$data,
+		function ($value, $property) {
+			return ($property === 'value') ? 'Filter can change leafs values' : $value;
+		}
+	);
 
-$nested = Nested::fromArray(
-	$data,
-	function ($value, $property) {
-		return ($property === 'value') ? 'Filter can change leafs values' : $value;
-	}
-);
-
-Assert::true($nested->a instanceof A);
-Assert::true($nested->b instanceof B);
-Assert::same('Filter can change leafs values', $nested->a->value);
-Assert::same('Filter can change leafs values', $nested->b->value);
+	Assert::same('Filter can change leafs values', $nested->a->value);
+	Assert::same('Filter can change leafs values', $nested->b->value);
+});

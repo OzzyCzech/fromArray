@@ -1,18 +1,17 @@
 <?php
 
+use DataLoader\FromArray;
 use Tester\Assert;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/bootstrap.php';
 
+test('Filter callback', function () {
+	class FilterCallback {
+		use FromArray;
 
-function changeToFalse() {
-	return false;
-}
+		public bool $value = true;
+	}
 
-class FilterCallback {
-	use \DataLoader\FromArray;
-	public $value = true;
-}
-
-$clb = FilterCallback::fromArray(['value' => true], 'changeToFalse');
-Assert::false($clb->value);
+	$results = FilterCallback::fromArray(['value' => true], fn() => false);
+	Assert::false($results->value);
+});

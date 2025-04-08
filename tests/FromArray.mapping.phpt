@@ -1,26 +1,35 @@
 <?php
 
+use DataLoader\FromArray;
 use Tester\Assert;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/bootstrap.php';
 
 class MappingExample {
 
-	use \DataLoader\FromArray;
+	use FromArray;
 
 	const MAPPING = [
 		'anotherId' => 'id',
-		'exampleNumber' => 'isNumber',
+		'anotherNumber' => 'number',
 	];
 
 	const SCHEME = [
-		'isNumber' => 'is_integer',
+		'number' => 'intval', // convert to integer
 	];
 
-	public $id;
-	public $isNumber;
+	public ?int $id = 0;
+	public ?int $number = 0;
 }
 
-$values = MappingExample::fromArray(['anotherId' => 123, 'exampleNumber' => 123]);
-Assert::true(is_integer($values->id));
-Assert::true($values->isNumber);
+test('Mapping properties to another keys', function () {
+	$values = MappingExample::fromArray(
+		[
+			'anotherId' => 123,
+			'anotherNumber' => '345'
+		]
+	);
+
+	Assert::same(123, $values->id);
+	Assert::same(345, $values->number);
+});

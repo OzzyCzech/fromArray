@@ -1,18 +1,19 @@
 <?php
 
+use DataLoader\FromArray;
 use Tester\Assert;
 
-require __DIR__ . '/../vendor/autoload.php';
+require __DIR__ . '/bootstrap.php';
 
 class DateExample {
 
-	use \DataLoader\FromArray;
+	use FromArray;
 
 	const SCHEME = ['date' => DateTime::class];
-
-	/** @var DateTime */
-	public $date = DateTime::class;
+	public string|DateTime $date = DateTime::class;
 }
 
-$dateExample = DateExample::fromArray(['date' => '2020-01-01']);
-Assert::true($dateExample->date instanceof DateTime);
+test('DateTime from array', function () {
+	$dateExample = DateExample::fromArray(['date' => '2020-01-01']);
+	Assert::true($dateExample->date instanceof DateTime);
+});
