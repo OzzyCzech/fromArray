@@ -1,5 +1,4 @@
-
-# `FromArray` Data loader trait 
+# `FromArray` Data Loader Trait
 
 ## Install
 
@@ -7,7 +6,7 @@
 composer require om/from-array
 ```
 
-`fromArray` trait allow to create objects instances loaded with initial data array:
+`fromArray` trait allows creating object instances loaded with an initial data array:
 
 ```php
 class Example {
@@ -29,7 +28,7 @@ $example = Example::fromArray(
 echo json_encode($example, JSON_PRETTY_PRINT);
 ```
 
-And that will be results...
+And that will be the result:
 
 ```json
 {
@@ -39,9 +38,9 @@ And that will be results...
 }
 ```
 
-### SCHEME and nesting
+### SCHEME and Nesting
 
-Default object scheme is defined with `SCHEME` constant. You can use **callable** functions:
+The default object scheme is defined with the `SCHEME` constant. You can use **callable** functions:
 
 ```php
 <?php
@@ -90,11 +89,10 @@ class NestedExample {
 }
 
 $example = NestedExample::fromArray(['nested' => ['some', 'data', 'here']]);
-var_dump($example->nested); // will return instance of Nested class
+var_dump($example->nested); // will return instance of NestedData class
 ```
 
-If you are use class that use same trait `object::fromArray()` then `fromArray` function (with same `$filter`)
-will be called instead of class constructor. That allow you to made nested structures and load structured data:
+If you use a class that uses the same trait, `object::fromArray()` will be called instead of the class constructor. This allows you to create nested structures and load structured data:
 
 ```php
 class One {
@@ -122,27 +120,27 @@ $nested = Multiple::fromArray(
 );
 ```
 
-You can also change scheme like that:
+You can also change the scheme like this:
 
 ```php
 $scheme = Nested::fromArray(data: $data, filter: ['a' => function($data) { return $data; }]);
 ```
 
-In this case `$data` in `$a` will remain unchanged...
+In this case, `$data` in `$a` will remain unchanged.
 
 ### Mapping
 
 ```php
 class Example {
   use \DataLoader\FromArray;
-  const MAPPING = ['anotherId'=>'id'];
+  const MAPPING = ['anotherId' => 'id'];
   public ?int $id = null;
 }
 $example = Example::fromArray(['anotherId' => 1234]);
 var_dump($example->id); // will return 1234
 ```
 
-### Value filter
+### Value Filter
 
 ```php
 class Filter {
@@ -150,7 +148,7 @@ class Filter {
   public string $notDate = '';
 }
 
-$data = ['date'=> '2017-11-01', 'notDate'=> '2017-11-01'];
+$data = ['date' => '2017-11-01', 'notDate' => '2017-11-01'];
 $example = Filter::fromArray($data, function ($value, $property) {
   return ($property === 'date') ? new DateTime($value) : $value;
 });
@@ -159,7 +157,7 @@ echo $example->notDate; // will return '2017-11-01' string
 var_dump($example->date); // will return DateTime object
 ```
 
-Filter can be useful when you for example load data from MongoDb:
+Filters can be useful when you load data from MongoDB:
 
 ```php
 function ($value, $property) {
@@ -169,7 +167,40 @@ function ($value, $property) {
 }
 ```
 
-## Testing
+### Handling Nested Arrays
+
+To process deeply nested arrays of objects, the trait supports recursive calls:
+
+```php
+class ParentClass {
+  use \DataLoader\FromArray;
+
+  const SCHEME = ['children' => ChildClass::class];
+  public array $children = [];
+}
+
+class ChildClass {
+  use \DataLoader\FromArray;
+  public ?string $name = null;
+}
+
+$data = [
+  'children' => [
+    ['name' => 'Child 1'],
+    ['name' => 'Child 2'],
+    [
+      'name' => 'Child 3',
+      'children' => [['name' => 'Grandchild 1']]
+    ]
+  ]
+];
+
+$parent = ParentClass::fromArray($data);
+```
+
+This ensures that nested structures are loaded correctly with unlimited depth.
+
+### Testing
 
 ```bash
 composer install
@@ -181,3 +212,4 @@ composer test # will run Nette Tester
 * https://github.com/zendframework/zend-hydrator - Zend Hydrator class
 * https://github.com/makasim/yadm - Mongo ODM
 * https://github.com/doctrine/DoctrineModule/blob/master/docs/hydrator.md - Doctrine Hydrator
+
