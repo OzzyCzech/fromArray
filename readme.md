@@ -171,3 +171,12 @@ $example = Example::fromArray([
 ```
 
 See [array-of-objects.php](/examples/array-of-objects.php) for more examples.
+
+### Metadata
+
+There is a `Metadata` object, that contains all the information about the class and its properties. Object is singleton,
+but you can load instance from any type of cache.
+
+```php
+Metadata::setInstance(...);
+```
