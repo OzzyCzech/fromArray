@@ -8,6 +8,7 @@ require __DIR__ . '/bootstrap.php';
 class Base
 {
     use FromArray;
+
     public ?string $value = null;
 }
 

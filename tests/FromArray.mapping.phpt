@@ -1,6 +1,7 @@
 <?php
 
 use DataLoader\FromArray;
+use DataLoader\Property;
 use Tester\Assert;
 
 require __DIR__ . '/bootstrap.php';
@@ -10,17 +11,11 @@ class MappingExample
 
     use FromArray;
 
-    const MAPPING = [
-        'anotherId' => 'id',
-        'anotherNumber' => 'number',
-    ];
-
-    const SCHEME = [
-        'number' => 'intval', // convert to integer
-    ];
-
-    public ?int $id = 0;
-    public ?int $number = 0;
+    #[Property(from: 'anotherId')]
+    public int $id = 0;
+    
+    #[Property(from: 'anotherNumber')]
+    public int $number = 0;
 }
 
 test('Mapping properties to another keys', function () {

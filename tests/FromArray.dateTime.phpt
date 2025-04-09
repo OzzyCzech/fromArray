@@ -7,11 +7,9 @@ require __DIR__ . '/bootstrap.php';
 
 class DateExample
 {
-
     use FromArray;
 
-    const SCHEME = ['date' => DateTime::class];
-    public string|DateTime $date = DateTime::class;
+    public ?DateTime $date = null;
 }
 
 test('DateTime from array', function () {
