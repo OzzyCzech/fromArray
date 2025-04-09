@@ -93,7 +93,7 @@ Loader can also be the name of a class, an object, or any type of callable funct
 
 #### `Loader`
 
-The `Loader` attribute allows you to define a specific loader for the property. You can add global loaders to the
+The `Loader` attribute allows you to define a specific value loader for the property. You can add global loaders to the
 class or to the property.
 
 ```php
@@ -127,8 +127,7 @@ $example = Example::fromArray([
 ]);
 ```
 
-See [./examples/loader-class.php](/examples/loader-class.php)
-and [./examples/loader-property.php](/examples/loader-property.php) for more examples.
+See [global loader](/examples/loader-class.php) and [property loader](/examples/loader-property.php) for more examples.
 
 ## Resources
 
