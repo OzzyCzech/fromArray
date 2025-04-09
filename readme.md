@@ -18,7 +18,7 @@ The `fromArray` trait enables the creation of object instances preloaded with an
 
 ```php
 class Example {
-  use \DataLoader\FromArray;
+  use FromArray;
   public string $a;
   public string $b;
   public string $c;
