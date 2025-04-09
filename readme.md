@@ -132,6 +132,46 @@ $example = Example::fromArray([
 See [loader-class.php](/examples/loader-class.php) and [loader-property.php](/examples/loader-property.php) for more
 examples.
 
+#### `Type`
+
+The `Type` attribute allows you to define a specific type for the property. Types are usually auto detected, but you can
+force the type using the `Type` attribute.
+
+```php
+class Example
+{
+    use FromArray;
+    
+    #[Type(name: Types::Int, allowNull: true, class: null)]
+    public mixed $id;
+}
+```
+
+There is one special case for the `Type`, you can specify that array is array of specific objects:
+
+```php
+class ExampleObject {
+    public function __construct(public string $name = null) {}
+}
+
+class Example
+{
+    use FromArray;
+    
+    #[Type(name: Types::ArrayOfObjects, class: ExampleObject::class)]
+    public array $objects = [];
+}
+
+$example = Example::fromArray([
+    'objects' => [
+        ['name' => 'John'],
+        ['name' => 'Doe'],
+    ],
+]);
+```
+
+See [array-of-objects.php](/examples/array-of-objects.php) for more examples.
+
 ## Resources
 
 * [Zend Hydrator class](https://github.com/zendframework/zend-hydrator)
