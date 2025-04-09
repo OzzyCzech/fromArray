@@ -6,7 +6,7 @@ use PhpCsFixer\Runner\Parallel\ParallelConfigFactory;
 
 $finder = Finder::create()
     ->in('src')
-    ->in('example')
+    ->in('examples')
     ->in('tests')
     ->exclude('vendor');
 
