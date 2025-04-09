@@ -89,7 +89,7 @@ $example = Example::fromArray(['name' => 'name']);
 assert($example->id === 'PREFIX_name');
 ```
 
-Loader can also be the name of a class, an object, or any type of callable function.
+Loader can also be the **name of a class**, an **object**, or any type of **callable function**.
 
 See [basic-example.php](/examples/basic-example.php) for more code examples.
 
