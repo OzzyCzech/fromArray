@@ -91,6 +91,8 @@ assert($example->id === 'PREFIX_name');
 
 Loader can also be the name of a class, an object, or any type of callable function.
 
+See [basic-example.php](/examples/basic-example.php) for more code examples.
+
 #### `Loader`
 
 The `Loader` attribute allows you to define a specific value loader for the property. You can add global loaders to the
@@ -127,7 +129,8 @@ $example = Example::fromArray([
 ]);
 ```
 
-See [global loader](/examples/loader-class.php) and [property loader](/examples/loader-property.php) for more examples.
+See [loader-class.php](/examples/loader-class.php) and [loader-property.php](/examples/loader-property.php) for more
+examples.
 
 ## Resources
 
