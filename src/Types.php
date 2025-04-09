@@ -12,5 +12,6 @@ enum Types: string
     case Mixed = 'mixed';
     case Object = 'object';
     case Enum = 'enum';
+    case ArrayOfObjects = 'array_of_objects';
 }
 

@@ -9,6 +9,11 @@ use function is_a;
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Type
 {
+    /**
+     * @param Types|null $name - Type name
+     * @param bool|null $allowNull - Whether null is allowed
+     * @param string|null $class - Class name for object type
+     */
     public function __construct(
         public ?Types $name = null,
         public ?bool $allowNull = null,

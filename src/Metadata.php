@@ -8,6 +8,9 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 
+use function current;
+use function var_dump;
+
 /**
  * Metadata class for storing property information
  */
@@ -15,9 +18,6 @@ class Metadata extends ArrayObject
 {
     private static ?self $instance = null;
 
-    /**
-     * @throws ReflectionException
-     */
     public function __construct(string ...$classes)
     {
         $this->resolve(...$classes);
@@ -33,6 +33,7 @@ class Metadata extends ArrayObject
     {
         foreach ($classes as $class) {
             $reflection = new ReflectionClass($class);
+            $classLoader = $this->getClassLoader($reflection);
 
             $properties = [];
             foreach ($reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
@@ -40,14 +41,43 @@ class Metadata extends ArrayObject
                 $property = $property ? $property->newInstance() : new Property(from: $reflectionProperty->getName());
 
                 // Set the property name and from attributes
+                $property->origin = $class;
                 $property->name ??= $reflectionProperty->getName();
                 $property->from ??= $reflectionProperty->getName();
-                $property->type ??= $this->resolvePropertyType($reflectionProperty);;
+                $property->type ??= $this->getPropertyType($reflectionProperty);
 
+                // resolve value loader
+                $property->loader ??= $this->getPropertyLoader($reflectionProperty) ?? $classLoader;
+
+                // save the property
                 $properties[$property->name] = $property;
             }
             $this->offsetSet($reflection->getName(), $properties);
         }
+    }
+
+    /**
+     * Try to resolve the class loader
+     * @param ReflectionClass $reflection
+     * @return callable
+     */
+    private function getClassLoader(ReflectionClass $reflection): callable
+    {
+        $classLoader = current($reflection->getAttributes(Loader::class));
+        return $classLoader ? $classLoader->newInstance() : new BaseLoader;
+    }
+
+    /**
+     * Try to resolve the property loader
+     * @param ReflectionProperty $reflectionProperty
+     * @return callable|null
+     */
+    private function getPropertyLoader(ReflectionProperty $reflectionProperty): ?callable
+    {
+        if ($filter = current($reflectionProperty->getAttributes(Loader::class))) {
+            return $filter->newInstance();
+        }
+        return null;
     }
 
     /**
@@ -56,7 +86,7 @@ class Metadata extends ArrayObject
      * @param ReflectionProperty $reflection
      * @return Type|null
      */
-    private function resolvePropertyType(ReflectionProperty $reflection): ?Type
+    private function getPropertyType(ReflectionProperty $reflection): ?Type
     {
         if ($type = current($reflection->getAttributes(Type::class))) {
             return $type->newInstance();
