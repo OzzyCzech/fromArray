@@ -45,7 +45,7 @@ And that will be the result:
 }
 ```
 
-The trait works with public properties only - private and protected properties will be ignored.
+The trait **works with public properties only** - private and protected properties will be ignored.
 
 ### The `Property`, `Loader` and `Type` attributes
 
