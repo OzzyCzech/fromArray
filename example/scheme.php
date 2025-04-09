@@ -8,18 +8,25 @@ class SchemeExample
 {
     use FromArray;
 
-    public const SCHEME = [
+    const SCHEME = [
         'id' => 'intval',
         'date' => DateTime::class,
     ];
     public ?int $id = null;
     public ?DateTime $date = null;
+    #[Type(fn() => 'bool')]
     public bool $alwaysFalse = true;
 }
 
 $example = SchemeExample::fromArray(
-    data: ['id' => '12345', 'alwaysFalse' => true, 'date' => '2020-01-01'],
-    scheme: ['alwaysFalse' => fn() => false],
+    data: [
+        'id' => '12345',
+        'alwaysFalse' => true,
+        'date' => '2020-01-01',
+    ],
+    scheme: [
+        'alwaysFalse' => fn() => false,
+    ],
 );
 
 var_dump($example->id); // will return integer 12345

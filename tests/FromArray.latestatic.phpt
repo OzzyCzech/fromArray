@@ -8,7 +8,6 @@ require __DIR__ . '/bootstrap.php';
 class Base
 {
     use FromArray;
-
     public ?string $value = null;
 }
 
@@ -19,7 +18,6 @@ test(
     'LateStaticBinding class name test',
     function () {
         $c = Custom::fromArray(['value' => 'abc']);
-
         Assert::type(Custom::class, $c);
         Assert::same('abc', $c->value);
     },

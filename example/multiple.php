@@ -22,16 +22,17 @@ class Multiple
 {
     use FromArray;
 
-    public const SCHEME = ['one' => One::class, 'two' => Two::class];
     public ?One $one = null;
     public ?Two $two = null;
 }
 
-$nested = Multiple::fromArray(
-    [
-        'one' => ['value' => 'set value for one'],
-        'two' => ['value' => 'set value for two'],
+$nested = Multiple::fromArray([
+    'one' => [
+        'value' => 'set value for one',
     ],
-);
+    'two' => [
+        'value' => 'set value for two',
+    ],
+]);
 
 var_dump($nested);

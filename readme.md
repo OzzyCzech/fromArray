@@ -52,16 +52,23 @@ class SchemeExample {
 
   const SCHEME = [
     'id' => 'intval',
-    'date' => DateTime::class
+    'date' => DateTime::class,
   ];
+  
   public ?int $id = null;
   public ?DateTime $date = null;
   public bool $alwaysFalse = true;
 }
 
 $example = SchemeExample::fromArray(
-  data: ['id' => '12345', 'alwaysFalse' => true, 'date' => '2020-01-01'],
-  scheme: ['alwaysFalse' => fn() => false]
+  data: [
+    'id' => '12345',
+    'alwaysFalse' => true,
+    'date' => '2020-01-01',
+  ],
+  scheme: [
+    'alwaysFalse' => fn() => false,
+  ]
 );
 
 var_dump($example->id); // will return integer 12345
@@ -72,10 +79,8 @@ var_dump($example->date->format('c')); // will return date
 Or you can use **class names**:
 
 ```php
-
 class NestedData {
   public array $data = [];
-
   public function __construct($data) {
     $this->data = $data;
   }
@@ -88,11 +93,14 @@ class NestedExample {
   public ?NestedData $nested = null;
 }
 
-$example = NestedExample::fromArray(['nested' => ['some', 'data', 'here']]);
+$example = NestedExample::fromArray(
+  ['nested' => ['some', 'data', 'here']]
+);
 var_dump($example->nested); // will return instance of NestedData class
 ```
 
-If you use a class that uses the same trait, `object::fromArray()` will be called instead of the class constructor. This allows you to create nested structures and load structured data:
+If you use a class that uses the same trait, `object::fromArray()` will be called instead of the class constructor. This
+allows you to create nested structures and load structured data:
 
 ```php
 class One {
@@ -107,17 +115,18 @@ class Two {
 
 class Multiple {
   use \DataLoader\FromArray;
-  const SCHEME = ['one' => One::class, 'two' => Two::class];
+  const SCHEME = [
+    'one' => One::class,
+    'two' => Two::class
+  ];
   public ?One $one = null;
   public ?Two $two = null;
 }
 
-$nested = Multiple::fromArray(
-  [
-    'one' => ['value' => 'set value for one'],
-    'two' => ['value' => 'set value for two']
-  ]
-);
+$nested = Multiple::fromArray([
+  'one' => ['value' => 'set value for one'],
+  'two' => ['value' => 'set value for two'],
+]);
 ```
 
 You can also change the scheme like this:
@@ -148,7 +157,10 @@ class Filter {
   public string $notDate = '';
 }
 
-$data = ['date' => '2017-11-01', 'notDate' => '2017-11-01'];
+$data = [
+  'date' => '2017-11-01',
+  'notDate' => '2017-11-01'
+];
 $example = Filter::fromArray($data, function ($value, $property) {
   return ($property === 'date') ? new DateTime($value) : $value;
 });
@@ -161,8 +173,12 @@ Filters can be useful when you load data from MongoDB:
 
 ```php
 function ($value, $property) {
-  if ($property === '_id') return new \MongoId((string)$value);
-  if ($value instanceof \MongoDate) return new \DateTime('@' . $value->sec);
+  
+  // convert to ObjectId
+  if ($property === '_id') return new \MongoDB\BSON\ObjectId($value);
+  
+  // convert to DateTime
+  if ($value instanceof \MongoDB\BSON\UTCDateTime) return $value->toDateTime(); 
   return $value;
 }
 ```
@@ -209,7 +225,7 @@ composer test # will run Nette Tester
 
 ## Resources
 
-* https://github.com/zendframework/zend-hydrator - Zend Hydrator class
-* https://github.com/makasim/yadm - Mongo ODM
-* https://github.com/doctrine/DoctrineModule/blob/master/docs/hydrator.md - Doctrine Hydrator
+* [Zend Hydrator class](https://github.com/zendframework/zend-hydrator)
+* [Mongo ODM](https://github.com/makasim/yadm)
+* [Doctrine Hydrator](https://github.com/doctrine/DoctrineModule/blob/2.1.x/docs/hydrator.md)
 

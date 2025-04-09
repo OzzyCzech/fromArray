@@ -1,25 +1,29 @@
 <?php
 
 use DataLoader\FromArray;
+use DataLoader\Property;
 
 require_once __DIR__ . '/../src/FromArray.php';
 
 class NestedData
 {
-    public function __construct(public string $data) {}
+    public string $value;
+
+    public function __construct($value)
+    {
+        $this->value = $value;
+    }
 }
 
 class NestedExample
 {
     use FromArray;
 
-    public const SCHEME = ['nested' => NestedData::class];
+    #[Property(object: NestedData::class)]
     public array $nested = [];
 }
 
-$example = NestedExample::fromArray(['nested' => ['some', 'data', 'here']]);
+$example = NestedExample::fromArray([
+    'nested' => ['some', 'data', 'here'],
+]);
 var_dump($example->nested); // will return instance of Nested class
-
-foreach ($example->nested as $item) {
-    var_dump($item->data); // will return 'some', 'data', 'here'
-}
