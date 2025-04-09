@@ -2,36 +2,43 @@
 
 use DataLoader\FromArray;
 
-require_once __DIR__ . '/../src/FromArray.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 class One
 {
     use FromArray;
 
-    public ?string $value = null;
+    public string $value;
 }
 
 class Two
 {
     use FromArray;
 
-    public ?string $value = null;
+    public string $value;
+    public One $nested;
+    public DateTime $dateTime;
 }
 
-class Multiple
+class NestedObject
 {
     use FromArray;
 
-    public ?One $one = null;
-    public ?Two $two = null;
+    public One $one;
+    public Two $two;
 }
 
-$nested = Multiple::fromArray([
+$nested = NestedObject::fromArray([
     'one' => [
         'value' => 'set value for one',
+        'ignore' => 'this will be ignored',
     ],
     'two' => [
         'value' => 'set value for two',
+        'dateTime' => '2025-04-09 00:00:00',
+        'nested' => [
+            'value' => 'another one',
+        ],
     ],
 ]);
 

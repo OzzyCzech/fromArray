@@ -16,9 +16,14 @@ class Example
 }
 
 $example = Example::fromArray([
+    // Will be stored in $id property
     '_id' => 'Value of one',
-    'date' => '2025-01-01 00:00:00',
+
+    // will be converted to DateTime
+    'date' => '2025-04-09 00:00:00',
+
+    // will be converted to int
     'amount' => '123456789',
 ]);
 
-echo json_encode($example, JSON_PRETTY_PRINT) . PHP_EOL;
+var_dump($example);
