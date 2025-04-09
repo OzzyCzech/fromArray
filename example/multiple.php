@@ -22,7 +22,7 @@ class Multiple
 {
     use FromArray;
 
-    const SCHEME = ['one' => One::class, 'two' => Two::class];
+    public const SCHEME = ['one' => One::class, 'two' => Two::class];
     public ?One $one = null;
     public ?Two $two = null;
 }

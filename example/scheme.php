@@ -8,7 +8,7 @@ class SchemeExample
 {
     use FromArray;
 
-    const SCHEME = [
+    public const SCHEME = [
         'id' => 'intval',
         'date' => DateTime::class,
     ];

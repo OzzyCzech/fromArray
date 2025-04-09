@@ -13,7 +13,7 @@ class NestedExample
 {
     use FromArray;
 
-    const SCHEME = ['nested' => NestedData::class];
+    public const SCHEME = ['nested' => NestedData::class];
     public array $nested = [];
 }
 

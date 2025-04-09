@@ -11,7 +11,6 @@ use function var_dump;
  */
 trait FromArray
 {
-
     public static function fromArray(
         array $data = [],
         ?callable $filter = null,
@@ -31,7 +30,7 @@ trait FromArray
         }
 
         // Hydrate object with values
-        foreach (get_object_vars($obj = new $class) as $property => $default) {
+        foreach (get_object_vars($obj = new $class()) as $property => $default) {
             // Resolve data key with mapping array
             $key = array_key_exists($property, $mapping) ? $mapping[$property] : $property;
 
