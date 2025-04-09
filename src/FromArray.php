@@ -13,7 +13,7 @@ trait FromArray
     {
         $class = get_called_class();
 
-        $object = new $class;
+        $object = new $class();
         foreach (Metadata::getProperties($class) as $property) {
             $key = $property->from ?? $property->name;
 

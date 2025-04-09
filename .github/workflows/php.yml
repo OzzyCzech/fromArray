@@ -25,7 +25,6 @@ jobs:
           php-cs-fixer fix --rules=@PER-CS2.0 --allow-risky=yes --verbose --show-progress=dots --dry-run
           php-cs-fixer fix --rules=@PER-CS2.0 --allow-risky=yes --verbose --show-progress=dots
 
-
   tests:
     runs-on: ${{ matrix.os }}
     strategy:
@@ -35,14 +34,10 @@ jobs:
 
     name: PHP ${{ matrix.php }} on ${{ matrix.os }}
     steps:
-
-      - name: Setup PHP
-        uses: shivammathur/setup-php@v2
+      - uses: actions/checkout@v4
+      - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
-
-      - name: Checkout code
-        uses: actions/checkout@v4
 
       - name: Validate composer.json and composer.lock
         run: composer validate
@@ -52,4 +47,3 @@ jobs:
 
       - name: Run test suite
         run: composer run-script test
-

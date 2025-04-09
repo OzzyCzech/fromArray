@@ -40,11 +40,11 @@ class BaseLoader
 
         // Convert Value to the specified type
         return match ($type->name ?? null) {
-            Types::Int => (int)$value,
-            Types::Bool => (bool)$value,
-            Types::String => (string)$value,
-            Types::Float => (float)$value,
-            Types::Array => (array)$value,
+            Types::Int => (int) $value,
+            Types::Bool => (bool) $value,
+            Types::String => (string) $value,
+            Types::Float => (float) $value,
+            Types::Array => (array) $value,
             Types::Object => new $type->class($value),
             Types::Enum => $type->allowNull ?
                 call_user_func([$type->class, 'tryFrom'], $value) :

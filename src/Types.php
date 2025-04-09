@@ -14,4 +14,3 @@ enum Types: string
     case Enum = 'enum';
     case ArrayOfObjects = 'array_of_objects';
 }
-

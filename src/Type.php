@@ -31,4 +31,3 @@ final class Type
         return $this->name === Types::Object && is_a($object_or_class, $this->class, true);
     }
 }
-

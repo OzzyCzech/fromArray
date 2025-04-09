@@ -19,7 +19,7 @@ final class Loader
     public function __construct(callable|string $callback)
     {
         $this->callback = is_callable($callback) ? $callback : null;
-        $this->callback ??= is_string($callback) && class_exists($callback) ? new $callback : null;
+        $this->callback ??= is_string($callback) && class_exists($callback) ? new $callback() : null;
     }
 
     public function __invoke(mixed $value, Property $property): mixed
@@ -27,4 +27,3 @@ final class Loader
         return ($this->callback)($value, $property);
     }
 }
-

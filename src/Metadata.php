@@ -64,7 +64,7 @@ class Metadata extends ArrayObject
     private function getClassLoader(ReflectionClass $reflection): callable
     {
         $classLoader = current($reflection->getAttributes(Loader::class));
-        return $classLoader ? $classLoader->newInstance() : new BaseLoader;
+        return $classLoader ? $classLoader->newInstance() : new BaseLoader();
     }
 
     /**

@@ -24,7 +24,7 @@ function changeAddress3(string $value)
 }
 
 #[Loader(MyCustomLoader::class)]
-class  ObjectWithLoader
+class ObjectWithLoader
 {
     use FromArray;
 

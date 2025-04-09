@@ -43,6 +43,6 @@ final class Property
         callable|string|null $loader = null,
     ) {
         $this->loader = is_callable($loader) ? $loader : null;
-        $this->loader ??= is_string($loader) && class_exists($loader) ? new $loader : null;
+        $this->loader ??= is_string($loader) && class_exists($loader) ? new $loader() : null;
     }
 }

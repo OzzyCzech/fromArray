@@ -41,7 +41,7 @@ class ObjectWithPropertyLoaders
     #[Loader('alwaysFalse')]
     public bool $alwaysFalse = true;
 
-    #[Loader(new DateTimeLoader)]
+    #[Loader(new DateTimeLoader())]
     public string $date;
 }
 
