@@ -91,7 +91,7 @@ assert($example->id === 'PREFIX_name');
 
 Loader can also be the **name of a class**, an **object**, or any type of **callable function**.
 
-See [basic-example.php](/examples/basic-example.php) for more code examples.
+For more see [basic-example.php](/examples/basic-example.php).
 
 #### `Loader`
 
@@ -129,8 +129,7 @@ $example = Example::fromArray([
 ]);
 ```
 
-See [loader-class.php](/examples/loader-class.php) and [loader-property.php](/examples/loader-property.php) for more
-examples.
+For more see [loader-class.php](/examples/loader-class.php) or [loader-property.php](/examples/loader-property.php)-
 
 #### `Type`
 
@@ -147,7 +146,8 @@ class Example
 }
 ```
 
-There is one special case for the `Type`, you can specify that array is array of specific objects:
+There is one special case for the `Type`, you can specify `Types::ArrayOfObjects` type to load an array of objects with
+the same class. The `class` parameter is required in this case.
 
 ```php
 class ExampleObject {
@@ -171,10 +171,3 @@ $example = Example::fromArray([
 ```
 
 See [array-of-objects.php](/examples/array-of-objects.php) for more examples.
-
-## Resources
-
-* [Zend Hydrator class](https://github.com/zendframework/zend-hydrator)
-* [Mongo ODM](https://github.com/makasim/yadm)
-* [Doctrine Hydrator](https://github.com/doctrine/DoctrineModule/blob/2.1.x/docs/hydrator.md)
-
