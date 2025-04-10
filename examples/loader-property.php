@@ -24,8 +24,7 @@ class DateTimeLoader
 {
     public function __invoke(string $value, Property $property): string
     {
-        var_dump($value);
-        return DateTime::createFromFormat('Y-m-d', $value)->format('c');
+        return DateTime::createFromFormat('Y-m-d', $value)->format('j. n. Y');
     }
 }
 
@@ -54,7 +53,10 @@ $example = ObjectWithPropertyLoaders::fromArray(
     ],
 );
 
-var_dump($example->id); // -1
-var_dump($example->name); // John Doe
-var_dump($example->alwaysFalse); // false
-var_dump($example->date); // 2025-01-01T00:00:00+00:00
+assert($example instanceof ObjectWithPropertyLoaders);
+assert($example->id === -1);
+assert($example->name === 'John Doe');
+assert($example->date === '1. 1. 2025');
+assert($example->alwaysFalse === false);
+
+var_dump($example); // -1

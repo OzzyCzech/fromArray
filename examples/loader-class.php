@@ -48,8 +48,11 @@ $example = ObjectWithLoader::fromArray(
     ],
 );
 
-var_dump($example->id); // -1
-var_dump($example->name); // John Doe
-var_dump($example->address); // 123 Main St
-var_dump($example->address2); // 123 Main St
-var_dump($example->address3); // 456 Elm St
+assert($example instanceof ObjectWithLoader);
+assert($example->id === -1);
+assert($example->name === 'John Doe');
+assert($example->address === '123 Main St');
+assert($example->address2 === '123 Main St');
+assert($example->address3 === '456 Elm St');
+
+var_dump($example);

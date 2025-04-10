@@ -42,4 +42,9 @@ $nested = NestedObject::fromArray([
     ],
 ]);
 
+assert($nested instanceof NestedObject);
+assert($nested->one instanceof One);
+assert($nested->two instanceof Two);
+assert($nested->two->dateTime instanceof DateTime);
+
 var_dump($nested);

@@ -9,7 +9,6 @@ use ReflectionNamedType;
 use ReflectionProperty;
 
 use function current;
-use function var_dump;
 
 /**
  * Metadata class for storing property information
@@ -18,18 +17,13 @@ class Metadata extends ArrayObject
 {
     private static ?self $instance = null;
 
-    public function __construct(string ...$classes)
-    {
-        $this->resolve(...$classes);
-    }
-
     /**
      * Resolve the metadata for the classes
      *
      * @param string[] $classes
      * @throws ReflectionException
      */
-    public function resolve(string ...$classes): void
+    public function resolve(string ...$classes): static
     {
         foreach ($classes as $class) {
             $reflection = new ReflectionClass($class);
@@ -54,6 +48,8 @@ class Metadata extends ArrayObject
             }
             $this->offsetSet($reflection->getName(), $properties);
         }
+
+        return $this;
     }
 
     /**
@@ -146,28 +142,30 @@ class Metadata extends ArrayObject
     }
 
     /**
-     * Set the metadata resolver instance (e.g. from cache)
+     * Restore the metadata to the singleton instance.
      *
      * @retur self
-     * @param self $resolver
+     * @param array $metadata
      * @return Metadata
      */
-    public static function setInstance(self $resolver): self
+    public static function fromCache(array $metadata): static
     {
-        return self::$instance = $resolver;
+        foreach ($metadata as $key => $value) {
+            self::getInstance()->offsetSet($key, $value);
+        }
+        return self::$instance;
     }
-
 
     /**
      * Get the metadata resolver instance
      *
-     * @param string ...$classes
      * @return static
      */
     public static function getInstance(string ...$classes): static
     {
         if (!self::$instance) {
-            self::$instance = new static(...$classes);
+            self::$instance = new static();
+            self::$instance->resolve(...$classes);
         }
         return self::$instance;
     }

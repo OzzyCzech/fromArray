@@ -27,4 +27,12 @@ $example = NestedExample::fromArray([
     ],
 ]);
 
+assert($example instanceof NestedExample);
+assert($example->objects[0] instanceof ExampleObject);
+assert($example->objects[0]->value === 'some');
+assert($example->objects[1] instanceof ExampleObject);
+assert($example->objects[1]->value === 'data');
+assert($example->objects[2] instanceof ExampleObject);
+assert($example->objects[2]->value === 'here');
+
 var_dump($example->objects); // will return instance of Nested class

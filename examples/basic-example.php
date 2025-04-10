@@ -26,4 +26,8 @@ $example = Example::fromArray([
     'amount' => '123456789',
 ]);
 
+assert($example instanceof Example);
+assert($example->id === 'Value of one');
+assert($example->date instanceof DateTime);
+assert($example->date->format('j. n. Y') === '9. 4. 2025');
 var_dump($example);

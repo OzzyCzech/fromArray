@@ -186,10 +186,17 @@ See [array-of-objects.php](/examples/array-of-objects.php) for more examples.
 ### Metadata
 
 There is a [`Metadata` object](https://github.com/OzzyCzech/fromArray/blob/main/src/Metadata.php), that contains all the
-information about the class and its properties. Object is singleton, but you can load instance from any type of cache.
+information about the class and its properties. `Metadata` object is singleton, but you can load instance from any type
+of cache.
 
 ```php
-Metadata::setInstance(...);
+// prepare metadata
+$metadata = new Metadata();
+$metadata->resolve(Example::class, MyObject::class);
+$data = $metadata->getArrayCopy();
+
+// restore singleton data
+Metadata::fromCache($data);
 ```
 
 ## Testing
