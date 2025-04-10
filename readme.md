@@ -8,6 +8,15 @@
 
 # `FromArray` Data Loader Trait
 
+## Introduction
+
+`FromArray` is a lightweight PHP trait that enables effortless object hydration from associative arrays. It is
+especially useful in scenarios where data needs to be mapped into strongly-typed objects, such as when working with
+APIs, form inputs, or configuration data.
+
+With support for PHP attributes, `FromArray` lets you fine-tune how each property is loaded, define type expectations,
+and apply custom transformation logic—all while keeping your code clean and expressive.
+
 ## Install
 
 ```shell
@@ -45,7 +54,7 @@ And that will be the result:
 }
 ```
 
-The trait **works with public properties only** - private and protected properties will be ignored.
+The trait **works with public properties only** – private and protected properties will be ignored.
 
 ### The `Property`, `Loader` and `Type` attributes
 
@@ -86,7 +95,7 @@ class Example
 }
 
 $example = Example::fromArray(['name' => 'name']);
-assert($example->id === 'PREFIX_name');
+assert($example->name === 'PREFIX_name');
 ```
 
 Loader can also be the **name of a class**, an **object**, or any type of **callable function**.
@@ -179,4 +188,13 @@ but you can load instance from any type of cache.
 
 ```php
 Metadata::setInstance(...);
+```
+
+## Testing
+
+How to run the tests:
+
+```bash
+composer test  # PHP tests
+composr format # PHP CS Fixer
 ```
