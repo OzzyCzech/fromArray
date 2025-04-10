@@ -181,7 +181,7 @@ $example = Example::fromArray([
 ]);
 ```
 
-See [array-of-objects.php](/examples/array-of-objects.php) for more examples.
+See [array-of-objects.php](/examples/array-of-objects.php) for more information.
 
 ### Metadata
 
@@ -198,6 +198,8 @@ $data = $metadata->getArrayCopy();
 // restore singleton data
 Metadata::fromCache($data);
 ```
+
+See [metadata-cache.php](/examples/metadata-cache.php) for more information.
 
 ## Testing
 
