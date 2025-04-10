@@ -23,6 +23,8 @@ and apply custom transformation logic—all while keeping your code clean and ex
 composer require om/from-array
 ```
 
+## Usage
+
 The `fromArray` trait enables the creation of object instances preloaded with an initial data array:
 
 ```php
@@ -183,8 +185,8 @@ See [array-of-objects.php](/examples/array-of-objects.php) for more examples.
 
 ### Metadata
 
-There is a `Metadata` object, that contains all the information about the class and its properties. Object is singleton,
-but you can load instance from any type of cache.
+There is a [`Metadata` object](https://github.com/OzzyCzech/fromArray/blob/main/src/Metadata.php), that contains all the
+information about the class and its properties. Object is singleton, but you can load instance from any type of cache.
 
 ```php
 Metadata::setInstance(...);
