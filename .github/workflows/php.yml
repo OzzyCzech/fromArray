@@ -17,7 +17,7 @@ jobs:
           tools: cs2pr, php-cs-fixer
 
       - name: Checkout code
-        uses: actions/checkout@v4
+        uses: actions/checkout@v6
 
       - name: Run
         run: |
@@ -34,7 +34,7 @@ jobs:
 
     name: PHP ${{ matrix.php }} on ${{ matrix.os }}
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v6
       - uses: shivammathur/setup-php@v2
         with:
           php-version: ${{ matrix.php }}
