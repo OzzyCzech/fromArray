@@ -31,7 +31,7 @@ class Metadata extends ArrayObject
 
             $properties = [];
             foreach ($reflection->getProperties(filter: ReflectionProperty::IS_PUBLIC) as $reflectionProperty) {
-                $property = current($reflectionProperty->getAttributes(Property::class));
+                $property = $reflectionProperty->getAttributes(Property::class)[0] ?? null;
                 $property = $property ? $property->newInstance() : new Property(from: $reflectionProperty->getName());
 
                 // Set the property name and from attributes
@@ -59,7 +59,7 @@ class Metadata extends ArrayObject
      */
     private function getClassLoader(ReflectionClass $reflection): callable
     {
-        $classLoader = current($reflection->getAttributes(Loader::class));
+        $classLoader = $reflection->getAttributes(Loader::class)[0] ?? null;
         return $classLoader ? $classLoader->newInstance() : new BaseLoader();
     }
 
@@ -70,7 +70,7 @@ class Metadata extends ArrayObject
      */
     private function getPropertyLoader(ReflectionProperty $reflectionProperty): ?callable
     {
-        if ($filter = current($reflectionProperty->getAttributes(Loader::class))) {
+        if ($filter = $reflectionProperty->getAttributes(Loader::class)[0] ?? null) {
             return $filter->newInstance();
         }
         return null;
@@ -84,7 +84,7 @@ class Metadata extends ArrayObject
      */
     private function getPropertyType(ReflectionProperty $reflection): ?Type
     {
-        if ($type = current($reflection->getAttributes(Type::class))) {
+        if ($type = $reflection->getAttributes(Type::class)[0] ?? null) {
             return $type->newInstance();
         }
 
@@ -92,10 +92,10 @@ class Metadata extends ArrayObject
             $name = $reflection->getType()->getName();
             $allowNull = $reflection->getType()->allowsNull();
 
-            // build in types
+            // built-in types
             if ($reflection->getType()->isBuiltin()) {
                 return new Type(
-                    name: Types::tryFrom($name) ?? trigger_error('Invalid type: ' . $name),
+                    name: Types::tryFrom($name) ?? throw new \InvalidArgumentException('Unsupported type: ' . $name),
                     allowNull: $allowNull,
                 );
             }
@@ -144,9 +144,8 @@ class Metadata extends ArrayObject
     /**
      * Restore the metadata to the singleton instance.
      *
-     * @retur self
      * @param array $metadata
-     * @return Metadata
+     * @return static
      */
     public static function fromCache(array $metadata): static
     {
@@ -170,4 +169,11 @@ class Metadata extends ArrayObject
         return self::$instance;
     }
 
+    /**
+     * Reset the singleton instance.
+     */
+    public static function resetInstance(): void
+    {
+        self::$instance = null;
+    }
 }

@@ -6,7 +6,7 @@ namespace DataLoader;
 
 class BaseLoader
 {
-    public function __invoke(mixed $value, Property $property)
+    public function __invoke(mixed $value, Property $property): mixed
     {
         $type = $property->type ?? null;
 
@@ -18,7 +18,7 @@ class BaseLoader
 
             // has fromArray method implemented
             if (method_exists($type->class, 'fromArray')) {
-                return call_user_func([$type->class, 'fromArray'], $value);
+                return $type->class::fromArray($value);
             }
         }
 
@@ -43,10 +43,9 @@ class BaseLoader
             Types::Array => (array) $value,
             Types::Object => new $type->class($value),
             Types::Enum => $type->allowNull ?
-                call_user_func([$type->class, 'tryFrom'], $value) :
-                call_user_func([$type->class, 'from'], $value),
+                $type->class::tryFrom($value) :
+                $type->class::from($value),
             default => $value,
         };
     }
-
 }
