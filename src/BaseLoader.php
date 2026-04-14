@@ -33,13 +33,12 @@ class BaseLoader
             );
         }
 
-        if ($type->allowNull && $value === null) {
+        if ($type?->allowNull && $value === null) {
             return null;
         }
 
-
         // Convert Value to the specified type
-        return match ($type->name ?? null) {
+        return match ($type?->name) {
             Types::Int => (int) $value,
             Types::Bool => (bool) $value,
             Types::String => (string) $value,
