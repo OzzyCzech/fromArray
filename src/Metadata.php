@@ -8,8 +8,6 @@ use ReflectionException;
 use ReflectionNamedType;
 use ReflectionProperty;
 
-use function current;
-
 /**
  * Metadata class for storing property information
  */

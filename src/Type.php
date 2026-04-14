@@ -4,8 +4,6 @@ namespace DataLoader;
 
 use Attribute;
 
-use function is_a;
-
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Type
 {

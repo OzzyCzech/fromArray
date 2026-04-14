@@ -2,11 +2,6 @@
 
 namespace DataLoader;
 
-use function array_map;
-use function call_user_func;
-use function is_array;
-use function method_exists;
-
 class BaseLoader
 {
     public function __invoke(mixed $value, Property $property)
