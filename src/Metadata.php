@@ -124,7 +124,7 @@ class Metadata extends ArrayObject
      */
     public static function getProperties(string $documentClass): array
     {
-        return self::getInstance()->offsetGet($documentClass) ?: [];
+        return self::getInstance()->offsetGet($documentClass);
     }
 
 
