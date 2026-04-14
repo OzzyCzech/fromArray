@@ -4,9 +4,6 @@ namespace DataLoader;
 
 use Attribute;
 
-use function class_exists;
-use function is_callable;
-
 #[Attribute(Attribute::TARGET_PROPERTY | Attribute::TARGET_CLASS)]
 final class Loader
 {
@@ -18,12 +15,27 @@ final class Loader
 
     public function __construct(callable|string $callback)
     {
-        $this->callback = is_callable($callback) ? $callback : null;
-        $this->callback ??= is_string($callback) && class_exists($callback) ? new $callback() : null;
+        $this->callback = self::resolveCallback($callback);
     }
 
     public function __invoke(mixed $value, Property $property): mixed
     {
         return ($this->callback)($value, $property);
+    }
+
+    /**
+     * Resolve a callable from a callable or class name string.
+     */
+    public static function resolveCallback(callable|string $callback): callable
+    {
+        if (is_callable($callback)) {
+            return $callback;
+        }
+
+        if (is_string($callback) && class_exists($callback)) {
+            return new $callback();
+        }
+
+        throw new \InvalidArgumentException('Invalid callback: ' . $callback);
     }
 }

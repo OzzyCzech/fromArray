@@ -4,10 +4,6 @@ namespace DataLoader;
 
 use Attribute;
 
-use function class_exists;
-use function is_callable;
-use function is_string;
-
 #[Attribute(Attribute::TARGET_PROPERTY)]
 final class Property
 {
@@ -42,7 +38,6 @@ final class Property
         public ?string $from = null,
         callable|string|null $loader = null,
     ) {
-        $this->loader = is_callable($loader) ? $loader : null;
-        $this->loader ??= is_string($loader) && class_exists($loader) ? new $loader() : null;
+        $this->loader = $loader !== null ? Loader::resolveCallback($loader) : null;
     }
 }
