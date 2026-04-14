@@ -207,5 +207,5 @@ How to run the tests:
 
 ```bash
 composer test  # PHP tests
-composr format # PHP CS Fixer
+composer format # PHP CS Fixer
 ```
